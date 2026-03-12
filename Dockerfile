@@ -1,31 +1,29 @@
-FROM eclipse-temurin:17-jdk-alpine AS builder
+# Build stage
+FROM maven:3.9-eclipse-temurin-17 AS builder
 
 WORKDIR /app
 
+# Copy pom.xml first for dependency caching
 COPY pom.xml .
-COPY mvnw .
-COPY .mvn .mvn
 
-RUN apk add --no-cache curl
+# Download dependencies
+RUN mvn dependency:go-offline -B
 
-RUN ./mvnw dependency:go-offline -B
-
+# Copy source code
 COPY src ./src
 
-RUN ./mvnw clean package -DskipTests -B
+# Build the application
+RUN mvn clean package -DskipTests -B
 
+# Runtime stage
 FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 
-RUN addgroup -S app && adduser -S app -G app
-
+# Copy the built artifact
 COPY --from=builder /app/target/*.jar app.jar
-
-RUN chown -R app:app /app
-
-USER app
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "-Xms256m", "-Xmx512m", "-XX:+UseG1GC", "-XX:+UseStringDeduplication", "app.jar"]
+# Reduced memory settings for cloud deployment
+ENTRYPOINT ["java", "-jar", "-Xms128m", "-Xmx256m", "-XX:+UseG1GC", "app.jar"]
