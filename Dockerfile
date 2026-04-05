@@ -18,3 +18,4 @@ COPY --from=builder /build/target/*.jar app.jar
 EXPOSE 8080
 
 ENTRYPOINT ["java", "-Dserver.port=8080", "-jar", "-Xms128m", "-Xmx256m", "-XX:+UseG1GC", "app.jar"]
+
