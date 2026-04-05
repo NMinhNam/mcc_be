@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -16,8 +15,11 @@ import javax.sql.DataSource;
 @MapperScan("com.erp.bom.**.mapper")
 public class MybatisPlusConfig {
 
-    @Autowired
-    private DataSource dataSource;
+    private final DataSource dataSource;
+
+    public MybatisPlusConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Bean
     public MybatisSqlSessionFactoryBean sqlSessionFactory() throws Exception {

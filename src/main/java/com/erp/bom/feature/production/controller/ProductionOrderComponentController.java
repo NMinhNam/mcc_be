@@ -4,7 +4,6 @@ import com.erp.bom.feature.production.entity.ProductionOrderComponent;
 import com.erp.bom.feature.production.service.ProductionOrderComponentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,12 +23,14 @@ public class ProductionOrderComponentController {
 
     private static final Logger log = LoggerFactory.getLogger(ProductionOrderComponentController.class);
 
-    @Autowired
-    private ProductionOrderComponentService productionOrderComponentService;
+    private final ProductionOrderComponentService productionOrderComponentService;
+
+    public ProductionOrderComponentController(ProductionOrderComponentService productionOrderComponentService) {
+        this.productionOrderComponentService = productionOrderComponentService;
+    }
 
     @PostMapping
     public ResponseEntity<ProductionOrderComponent> create(@RequestBody ProductionOrderComponent component) {
-        // Debug: Log raw request info
         log.debug("[POST /api/production-order-components] Request received");
 
         if (component == null) {
@@ -51,22 +52,6 @@ public class ProductionOrderComponentController {
         productionOrderComponentService.save(component);
         log.info("[POST /api/production-order-components] Response: {}", component);
         return ResponseEntity.status(HttpStatus.CREATED).body(component);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ProductionOrderComponent> getById(@PathVariable Long id) {
-        log.info("[GET /api/production-order-components/{}]", id);
-        ProductionOrderComponent component = productionOrderComponentService.getById(id);
-        if (component == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(component);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<ProductionOrderComponent>> getAll() {
-        log.info("[GET /api/production-order-components]");
-        return ResponseEntity.ok(productionOrderComponentService.list());
     }
 
     @GetMapping("/order/{productionOrderId}")

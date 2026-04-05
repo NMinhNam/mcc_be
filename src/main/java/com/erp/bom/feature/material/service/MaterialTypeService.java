@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.erp.bom.feature.material.entity.MaterialType;
 import com.erp.bom.feature.material.mapper.MaterialTypeMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,8 +11,11 @@ import java.util.List;
 @Service
 public class MaterialTypeService {
 
-    @Autowired
-    private MaterialTypeMapper materialTypeMapper;
+    private final MaterialTypeMapper materialTypeMapper;
+
+    public MaterialTypeService(MaterialTypeMapper materialTypeMapper) {
+        this.materialTypeMapper = materialTypeMapper;
+    }
 
     public MaterialType create(MaterialType materialType) {
         materialTypeMapper.insert(materialType);

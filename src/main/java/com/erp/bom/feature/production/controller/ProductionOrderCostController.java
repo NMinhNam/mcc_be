@@ -2,7 +2,6 @@ package com.erp.bom.feature.production.controller;
 
 import com.erp.bom.feature.production.entity.ProductionOrderCost;
 import com.erp.bom.feature.production.service.ProductionOrderCostService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,8 +19,11 @@ import java.util.List;
 @RequestMapping("/api/production-order-costs")
 public class ProductionOrderCostController {
 
-    @Autowired
-    private ProductionOrderCostService productionOrderCostService;
+    private final ProductionOrderCostService productionOrderCostService;
+
+    public ProductionOrderCostController(ProductionOrderCostService productionOrderCostService) {
+        this.productionOrderCostService = productionOrderCostService;
+    }
 
     @PostMapping
     public ResponseEntity<ProductionOrderCost> create(@RequestBody ProductionOrderCost cost) {

@@ -43,6 +43,15 @@ public class BomRowServiceImpl implements BomRowService {
     }
 
     @Override
+    public List<BomRow> getBomRowEntitiesByProductId(UUID productId) {
+        LambdaQueryWrapper<BomRow> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(BomRow::getProductId, productId)
+                .orderByAsc(BomRow::getStt);
+
+        return bomRowMapper.selectList(wrapper);
+    }
+
+    @Override
     @Transactional
     public void syncBomRows(UUID productId, List<BomRowRequest> requests) {
         LambdaQueryWrapper<BomRow> deleteWrapper = new LambdaQueryWrapper<>();

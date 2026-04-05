@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.erp.bom.feature.production.entity.ProductionOrder;
 import com.erp.bom.feature.production.mapper.ProductionOrderMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,8 +13,11 @@ import java.util.List;
 @Service
 public class ProductionOrderService {
 
-    @Autowired
-    private ProductionOrderMapper productionOrderMapper;
+    private final ProductionOrderMapper productionOrderMapper;
+
+    public ProductionOrderService(ProductionOrderMapper productionOrderMapper) {
+        this.productionOrderMapper = productionOrderMapper;
+    }
 
     public ProductionOrder create(ProductionOrder productionOrder) {
         String orderNo = generateOrderNo();
