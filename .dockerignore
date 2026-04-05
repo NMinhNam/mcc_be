@@ -33,12 +33,5 @@ logs/
 tmp/
 temp/
 
-# Documentation
-doc/
-*.md
-
 # Environment files
 .env
-
-# Database scripts (already mounted in compose)
-script/
