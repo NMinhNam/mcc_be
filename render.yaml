@@ -3,13 +3,11 @@ services:
     name: erp_bom
     env: docker
     dockerfilePath: Dockerfile
-    buildCommand: mvn clean package -DskipTests
     instanceCount: 1
     instanceType: free
-    autoDeploy: false
     envVars:
       - key: PORT
-        value: 8080
+        value: "8080"
       - key: DB_URL
         sync: false
       - key: DB_USERNAME
@@ -18,7 +16,5 @@ services:
         sync: false
       - key: JWT_SECRET
         sync: false
-      - key: JWT_EXPIRATION
-        value: 86400000
       - key: CLOUDINARY_URL
         sync: false
